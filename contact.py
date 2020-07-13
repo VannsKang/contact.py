@@ -17,11 +17,55 @@ def set_contact():
     phone_number = input("Phone Number: ")
     e_mail = input("E-mail: ")
     addr = input("Address: ")
-    print(name, phone_number, e_mail, addr)
+    contact = Contact(name, phone_number, e_mail, addr)
+    return contact
+
+
+def print_menu():
+    print("1. contact input")
+    print("2. contact check")
+    print("3. contact delete")
+    print("4. quit")
+    menu = input("menu: ")
+    return int(menu)
+
+
+def print_contact(contact_list):
+    for contact in contact_list:
+        contact.print_info()
+
+
+def delete_contact(contact_list, name):
+    for i, contact in enumerate(contact_list):
+        if contact.name == name:
+            del contact_list[i]
+
+
+def store_contact(contact_list):
+    f = open("contact_db.txt", "wt")
+    for contact in contact_list:
+        f.write(contact.name + '\n')
+        f.write(contact.phone_number + '\n')
+        f.write(contact.e_mail + '\n')
+        f.write(contact.addr + '\n')
+    f.close()
 
 
 def run():
-    set_contact()
+    contact_list = []
+    while True:
+        menu = print_menu()
+        if menu == 1:
+            contact = set_contact()
+            contact_list.append(contact)
+        elif menu == 2:
+            print_contact(contact_list)
+        elif menu == 3:
+            name = input("name: ")
+            delete_contact(contact_list, name)
+        elif menu == 4:
+            store_contact(contact_list)
+            break
 
 
 if __name__ == "__main__":
